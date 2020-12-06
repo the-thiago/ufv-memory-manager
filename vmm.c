@@ -40,7 +40,18 @@ typedef struct {
 
 int fifo(int8_t** page_table, int num_pages, int prev_page,
          int fifo_frm, int num_frames, int clock) {
-    return -1;
+
+	int i;
+	for (i = 0; i < num_pages; i++) {		
+		// Encontra na tabela de páginas a vítima, aquela que o endereço físico
+		// referenciado é o mesmo do armazenado pelo fifo_frm
+		if (page_table[i][PT_FRAMEID] == fifo_frm) {
+			//printf("Page Fault - Página vítima: %d. Na moldura: %d.\n", i, fifo_frm);
+			return i;
+		}
+	}
+
+    return -1; // Tem alguma coisa errada, através de assert() o programa é encerrado
 }
 
 int second_chance(int8_t** page_table, int num_pages, int prev_page,
@@ -101,6 +112,7 @@ int simulate(int8_t **page_table, int num_pages, int *prev_page, int *fifo_frm,
     if ((*num_free_frames) > 0) { // Ainda temos memória física livre!
         next_frame_addr = find_next_frame(physical_memory, num_free_frames,
                                           num_frames, prev_free);
+        //printf("Page Fault - Memória livre, a moldura %d será ocupada.\n", next_frame_addr);
         if (*fifo_frm == -1)
             *fifo_frm = next_frame_addr;
         *num_free_frames = *num_free_frames - 1;
