@@ -58,10 +58,7 @@ Dois printfs nas linhas 49 e 115, que inicialmente estão como comentários, aju
 ![Imagem mostra a execução com prints](https://github.com/the-thiago/UFV-GerenciadorDeMemoria/blob/master/ImagensDoReadMe/execucaoComPrints.png?raw=true)
 
 ##### Comparando o FIFO com o Random
-Algoritmo/Execução  | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | Média de Page Faults
-------------- | -------------
-Random  | 11 | 9 | 8 | 9 | 10 | 8 |  10 | 10 |  8 |  10 | 9,3
-FIFO | 9 | 9 | 9 | 9 | 9 | 9 | 9 | 9 | 9 | 9 | 9
+![Imagem mostra a execução com prints](https://github.com/the-thiago/UFV-GerenciadorDeMemoria/blob/master/ImagensDoReadMe/tabela.png?raw=true)
 
 A tabela acima nos apresenta 10 execuções de cada algoritmo, Random e FIFO. As médias não são tão diferentes já que "anomaly.dat" não é tão grande. O FIFO gera sempre a mesma resposta para a mesma entrada, como ele não leva em consideração quais páginas estão sendo mais utilizadas, acontece de ele substituir a página que chegou primeiro, mas é a mais utilizada. Já o Random, teve a variação de 8 a 11 page faults, como depende da aleatoriedade pode acontecer de ter uma performance excelente ou péssima, a média ficou próxima do FIFO. Ambos os algoritmos são simples e possuem desempenho pior que de outros algoritmos da literatura.
 
