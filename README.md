@@ -1,37 +1,37 @@
-# UFV-GerenciadorDeMemoria
-## Link do repositório: https://github.com/the-thiago/UFV-GerenciadorDeMemoria
+# ufv-memory-manager
+Contributors
 ###### - Leandro Guimarães Oliveira - 4835
 ###### - Thiago Moreira de Souza - 6011
 ###### - Gabriel Antunes Fernandes Fonseca - 6039
 
-#### Trabalho executado em graduação pela disciplina de Sistemas Operacionais na Universidade Federal de Viçosa.
+#### Project developed in undergraduate course of Operating Systems at the Federal University of Viçosa.
 #### Prof. Rodrigo Moreira - SIN 351
 
-## SOBRE O PROJETO
-É implementando em linguagem C, a partir de materiais suplementares disponibilizados pelo professor, o algoritmo First-in First-out (Primeiro que Entra, Primeiro que Sai) para substituição de páginas (Conteúdo de Memória Virtual). Foi comparado o desempenho do algoritmo implementado com o Random (Aleatório) disponibilizado pelo professor. As principais funcionalidades do código e do algoritmo FIFO são explicadas. Ao final da execução do programa, é exibido a quantidade de falta de páginas para o algoritmo passado como parâmetro, o FIFO ou o Random.
+## ABOUT THE PROJECT
+It is implementing in C language, from supplementary materials provided by the teacher, the First-in First-out algorithm to replace pages (Virtual Memory Content). The performance of the implemented algorithm was compared with the Random one provided by the teacher. The main features of the FIFO code and algorithm are explained. At the end of the program execution, the number of missing pages for the algorithm passed as a parameter, FIFO or Random, is displayed.
 
-## COMO UTILIZAR
-##### COMANDOS
-1- Devemos compilar o programa com a seguinte instrução:
+## HOW TO USE
+##### COMMANDS
+1- We must compile the program with the following instruction:
 
 `$ gcc -Wall vmm.c -o vmm`
 
-2- Devemos executar o programa passando 3 parâmetros. Nosso programa suporta o primeiro argumento como "random" ou "fifo", o primeiro executa o algoritmo disponibilizado pelo professor e o segundo o desenvolvido por nós. A saída será um número indicando a quantidade de falta de páginas para o algoritmo passando como parâmetro.
+2- We must run the program passing 3 parameters. Our program supports the first argument as "random" or "fifo", the first one executes the algorithm provided by the teacher and the second one developed by us. The output will be a number indicating the amount of missing pages for the algorithm passing as a parameter.
 
 `$ ./vmm random 10 < anomaly.dat`
 
 `$ ./vmm fifo 10 < anomaly.dat`
 
-##### EXEMPLO DE UTILIZAÇÃO
+##### EXAMPLES OF USE
 
-![Imagem que mostra a utilização do programa](https://github.com/the-thiago/UFV-GerenciadorDeMemoria/blob/master/ImagensDoReadMe/exemploDeUso.png?raw=true)
+![Image showing the use of the program](https://github.com/the-thiago/UFV-GerenciadorDeMemoria/blob/master/ImagensDoReadMe/exemploDeUso.png?raw=true)
 
-##  O ALGORITMO E COMPARAÇÕES
+##  THE ALGORITHM AND COMPARISONS
 
-##### Algoritimo First-in First-out (Primeiro que Entra, Primeiro que Sai) - FIFO
-O sistema operacional mantém uma lista de páginas correntes na memória, a página (mais antiga), no início da fila, é a primeira ser descartada. Sua principal vantagem é a simplicidade de implementação. No entanto, como não leva em conta o quanto uma página está sendo acessada, pode retirar uma página antiga, mas que é acessada com frequência.
+##### First-in First-out Algorithm (First In, First Out) - FIFO
+The operating system maintains a list of current pages in memory, the (oldest) page at the head of the queue is the first to be discarded. Its main advantage is the simplicity of implementation. However, as it doesn't take into account how often a page is being accessed, it can remove an old page that is accessed frequently.
 
-##### Implementação do FIFO
+##### FIFO implementation
 
 ```c
 int fifo(int8_t** page_table, int num_pages, int prev_page,
@@ -51,14 +51,13 @@ int fifo(int8_t** page_table, int num_pages, int prev_page,
 }
 
 ```
-A função implementada deve retornar o índice de qual página da tabela de páginas será substituída. Recebe como parâmetros a page_table, fifo_frm e num_pages (entre outros que não são utilizados pela nossa função), o fifo_frm nos indica qual é a moldura mais velha na memória física, ou seja, qual moldura será substituída. Cada página da tabela, no índice PT_FRAMEID definido como 0, indica qual moldura a página está referenciado (-1 quando não mapeia nada na memória física). Basta percorrer a page_table por meio de um loop, com auxílio do num_pages, verificando se a página de índice i referencia a mesma moldura do fifo_frm, retornando qual página deve ser substituída.
+The implemented function must return the index of which page of the page table will be replaced. It takes as parameters page_table, fifo_frm and num_pages (among others that are not used by our function), fifo_frm tells us which is the oldest frame in physical memory, that is, which frame will be replaced. Each page of the table, at index PT_FRAMEID set to 0, indicates which frame the page is referenced (-1 when it does not map anything in physical memory). Just go through the page_table through a loop, with the help of num_pages, checking if the index page i references the same frame as fifo_frm, returning which page should be replaced.
 
-Dois printfs nas linhas 49 e 115, que inicialmente estão como comentários, ajudam a entender os momentos em que há falta de páginas. Quando há falta de página e ainda tem memória livre, e quando há falta de página e o FIFO é chamado para liberar memória. Como o exemplo a seguir:
+Two printfs on lines 49 and 115, which are initially commented out, help to understand when pages are missing. When there is a page fault and there is still free memory, and when there is a page fault and FIFO is called to free memory. Like the following example:
 
-![Imagem mostra a execução com prints](https://github.com/the-thiago/UFV-GerenciadorDeMemoria/blob/master/ImagensDoReadMe/execucaoComPrints.png?raw=true)
+![Image shows running with prints](https://github.com/the-thiago/UFV-GerenciadorDeMemoria/blob/master/ImagensDoReadMe/execucaoComPrints.png?raw=true)
 
-##### Comparando o FIFO com o Random
-![Imagem mostra a execução com prints](https://github.com/the-thiago/UFV-GerenciadorDeMemoria/blob/master/ImagensDoReadMe/tabela.png?raw=true)
+##### Comparing FIFO with Random
+![Image shows running with prints](https://github.com/the-thiago/UFV-GerenciadorDeMemoria/blob/master/ImagensDoReadMe/tabela.png?raw=true)
 
-A tabela acima nos apresenta 10 execuções de cada algoritmo, Random e FIFO. As médias não são tão diferentes já que "anomaly.dat" não é tão grande. O FIFO gera sempre a mesma resposta para a mesma entrada, como ele não leva em consideração quais páginas estão sendo mais utilizadas, acontece de ele substituir a página que chegou primeiro, mas é a mais utilizada. Já o Random, teve a variação de 8 a 11 page faults, como depende da aleatoriedade pode acontecer de ter uma performance excelente ou péssima, a média ficou próxima do FIFO. Ambos os algoritmos são simples e possuem desempenho pior que de outros algoritmos da literatura.
-
+The table above presents us with 10 executions of each algorithm, Random and FIFO. The averages are not that different since "anomaly.dat" is not that big. FIFO always generates the same response for the same entry, as it does not take into account which pages are being used the most, it happens to replace the page that arrived first, but is the most used. Random, on the other hand, had a variation of 8 to 11 page faults, depending on randomness, it can happen to have an excellent or terrible performance, the average was close to the FIFO. Both algorithms are simple and perform worse than other algorithms in the literature.
